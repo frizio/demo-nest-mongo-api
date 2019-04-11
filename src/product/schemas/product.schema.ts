@@ -1,1 +1,1 @@
-export class Product.Schema {}
+export const ProductSchema = null;
