@@ -1,1 +1,1 @@
-export class Product.Dto {}
+export class ProductDto {}
