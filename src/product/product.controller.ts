@@ -21,4 +21,10 @@ export class ProductController {
         );
     }
 
+    @Get('/')
+    async getProducts(@Res() res: Response ) {
+        const products = await this.productService.getProducts();
+        return res.status(HttpStatus.OK).json( {products} );
+    }
+
 }
