@@ -1,6 +1,6 @@
 import { ProductService } from './product.service';
 import { ProductDto } from './dto/product.dto';
-import { Controller, Get, Post, Put, Delete, Res, HttpStatus, Body } from '@nestjs/common';
+import { Controller, Get, Post, Put, Delete, Res, HttpStatus, Body, Param, NotFoundException } from '@nestjs/common';
 import { Response } from 'express';
 
 @Controller('product')
@@ -25,6 +25,15 @@ export class ProductController {
     async getProducts(@Res() res: Response ) {
         const products = await this.productService.getProducts();
         return res.status(HttpStatus.OK).json( {products} );
+    }
+
+    @Get('/:productId')
+    async getProduct(@Param('productId') productId, @Res() res: Response) {
+        const product = await this.productService.getProduct(productId);
+        if (!product) {
+            throw new NotFoundException('The product does not exists');
+        }
+        return res.status(HttpStatus.OK).json( {product} );
     }
 
 }
