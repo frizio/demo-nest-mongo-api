@@ -50,4 +50,18 @@ export class ProductController {
         );
     }
 
+    @Put('/update')
+    async updateProduct(@Query('productId') productId, @Body() productDto: ProductDto, @Res() res: Response) {
+        const updatedProduct = await this.productService.updateProduct(productId, productDto);
+        if (!updatedProduct) {
+            throw new NotFoundException('The product does not exists');
+        }
+        res.status(HttpStatus.OK).json(
+            {
+                message: 'Product Updated Successfully',
+                product: updatedProduct,
+            },
+        );
+    }
+
 }
