@@ -1,6 +1,6 @@
 import { ProductService } from './product.service';
 import { ProductDto } from './dto/product.dto';
-import { Controller, Get, Post, Put, Delete, Res, HttpStatus, Body, Param, NotFoundException } from '@nestjs/common';
+import { Controller, Get, Post, Put, Delete, Res, HttpStatus, Body, Param, NotFoundException, Query } from '@nestjs/common';
 import { Response } from 'express';
 
 @Controller('product')
@@ -28,12 +28,26 @@ export class ProductController {
     }
 
     @Get('/:productId')
-    async getProduct(@Param('productId') productId, @Res() res: Response) {
+    async getProduct(@Param('productId') productId: string, @Res() res: Response) {
         const product = await this.productService.getProduct(productId);
         if (!product) {
             throw new NotFoundException('The product does not exists');
         }
         return res.status(HttpStatus.OK).json( {product} );
+    }
+
+    @Delete('/delete')
+    async deleteProduct(@Query('productId') productId, @Res() res: Response) {
+        const deletedProduct = await this.productService.deleteProduct(productId);
+        if (!deletedProduct) {
+            throw new NotFoundException('The product does not exists');
+        }
+        res.status(HttpStatus.OK).json(
+            {
+                message: 'Product Deleted Successfully',
+                product: deletedProduct,
+            },
+        );
     }
 
 }
