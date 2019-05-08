@@ -24,7 +24,7 @@ export class ProductController {
     @Get('/')
     async getProducts(@Res() res: Response ) {
         const products = await this.productService.getProducts();
-        return res.status(HttpStatus.OK).json( {products} );
+        return res.status(HttpStatus.OK).json( products );
     }
 
     @Get('/:productId')
@@ -33,7 +33,7 @@ export class ProductController {
         if (!product) {
             throw new NotFoundException('The product does not exists');
         }
-        return res.status(HttpStatus.OK).json( {product} );
+        return res.status(HttpStatus.OK).json( product );
     }
 
     @Delete('/delete')
